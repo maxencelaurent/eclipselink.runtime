@@ -26,8 +26,6 @@
 package org.eclipse.persistence.internal.databaseaccess;
 
 // javase imports
-import static org.eclipse.persistence.internal.helper.DatabaseField.NULL_SQL_TYPE;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,11 +47,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.persistence.exceptions.DatabaseException;
 import org.eclipse.persistence.exceptions.QueryException;
 import org.eclipse.persistence.internal.helper.ClassConstants;
 import org.eclipse.persistence.internal.helper.DatabaseField;
+import static org.eclipse.persistence.internal.helper.DatabaseField.NULL_SQL_TYPE;
 import org.eclipse.persistence.internal.helper.Helper;
 import org.eclipse.persistence.internal.helper.LOBValueWriter;
 import org.eclipse.persistence.internal.helper.NonSynchronizedVector;
@@ -65,7 +63,6 @@ import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.internal.sessions.ArrayRecord;
 import org.eclipse.persistence.logging.SessionLog;
 import org.eclipse.persistence.mappings.structures.ObjectRelationalDataTypeDescriptor;
-// EclipseLink imports
 import org.eclipse.persistence.queries.Call;
 import org.eclipse.persistence.queries.DatabaseQuery;
 import org.eclipse.persistence.sessions.DatabaseLogin;
@@ -1380,7 +1377,7 @@ public class DatabaseAccessor extends DatasourceAccessor {
         } else if ((fieldType == ClassConstants.SHORT) || (fieldType == ClassConstants.PSHORT)) {
             value = Short.valueOf(resultSet.getShort(columnNumber));
             isPrimitive = ((Short)value).shortValue() == 0;
-        } else if (Helper.shouldOptimizeDates && (type == Types.TIME) || (type == Types.DATE) || (type == Types.TIMESTAMP)) {
+        } else if (Helper.shouldOptimizeDates && ((type == Types.TIME) || (type == Types.DATE) || (type == Types.TIMESTAMP))) {
             // Optimize dates by avoid conversion to timestamp then back to date or time or util.date.
             String dateString = resultSet.getString(columnNumber);
             value = platform.convertObject(dateString, fieldType);
